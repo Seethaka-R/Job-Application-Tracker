@@ -334,13 +334,13 @@ From the project root, you can use two terminal windows:
 | Page | Preview |
 |------|---------|
 | Landing Page | ![](docs/Screenshots/d1.png) |
-| Register |  ![](docs/Screenshots/d2.png)  |
-| Login |  ![](docs/Screenshots/d3.png)  |
-| Dashboard |  ![](docs/Screenshots/d5.png)  |
-| Add Job |  ![](docs/Screenshots/d4.png)  |
-| All Jobs |  ![](docs/Screenshots/d6.png)  |
-| Filter/Search |  ![](docs/Screenshots/d7.png)  |
-| Mobile View |  ![](docs/Screenshots/d8.png)  |
+| Login |  ![](docs/Screenshots/d2.png)  |
+| Dashboard |  ![](docs/Screenshots/d3.png)  |
+| My Application|  ![](docs/Screenshots/d5.png)  |
+| Post Job |  ![](docs/Screenshots/d4.png)  |
+| Add Application |  ![](docs/Screenshots/d6.png)  |
+| Browse Jobs |  ![](docs/Screenshots/d7.png)  |
+| View Profile |  ![](docs/Screenshots/d8.png)  |
 
 ---
 
