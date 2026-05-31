@@ -30,7 +30,7 @@ import { ApiError } from "../middleware/errorHandler.js";
  */
 const generateToken = (user) => {
   return jwt.sign(
-    { userId: user._id, name: user.name, email: user.email },
+    { userId: user._id, name: user.name, email: user.email, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: "30d" } // Token valid for 30 days
   );
@@ -43,7 +43,7 @@ const generateToken = (user) => {
 // ──────────────────────────────────────────────
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if a user with this email already exists
     const existingUser = await User.findOne({ email });
@@ -52,7 +52,7 @@ export const register = async (req, res, next) => {
     }
 
     // Create the user (password is hashed automatically via pre-save hook)
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ name, email, password, role: role || "user" });
 
     // Generate a JWT for the newly registered user
     const token = generateToken(user);
@@ -132,8 +132,34 @@ export const getMe = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
+        resume: user.resume,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ──────────────────────────────────────────────
+// @desc    Upload a resume file for the current user
+// @route   POST /api/auth/upload-resume
+// @access  Protected
+// ──────────────────────────────────────────────
+export const uploadResume = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
+
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    // Save the file path relative to server root
+    user.resume = req.file.path.replace(/\\/g, "/");
+    await user.save();
+
+    res.status(200).json({ success: true, message: "Resume uploaded", resume: user.resume });
   } catch (error) {
     next(error);
   }

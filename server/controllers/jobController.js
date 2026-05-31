@@ -254,3 +254,38 @@ export const getJobStats = async (req, res, next) => {
     next(error);
   }
 };
+
+// ──────────────────────────────────────────────
+// @desc    Admin: update job status for any job
+// @route   PATCH /api/jobs/:id/status
+// @access  Admin
+// ──────────────────────────────────────────────
+export const adminUpdateStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      throw new ApiError("Please provide a status", 400);
+    }
+
+    const allowed = ["Applied", "Interview", "Offer", "Rejected"];
+    if (!allowed.includes(status)) {
+      throw new ApiError("Invalid status value", 400);
+    }
+
+    const job = await Job.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!job) {
+      throw new ApiError(`No job found with id: ${id}`, 404);
+    }
+
+    res.status(200).json({ success: true, message: "Job status updated", job });
+  } catch (error) {
+    next(error);
+  }
+};

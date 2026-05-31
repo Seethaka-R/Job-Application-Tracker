@@ -22,6 +22,7 @@
 
 import { Router } from "express";
 import protect from "../middleware/authMiddleware.js";
+import admin from "../middleware/adminMiddleware.js";
 import {
   getAllJobs,
   createJob,
@@ -29,6 +30,7 @@ import {
   updateJob,
   deleteJob,
   getJobStats,
+  adminUpdateStatus,
 } from "../controllers/jobController.js";
 
 const router = Router();
@@ -44,5 +46,11 @@ router.get("/stats", getJobStats);
 
 // ── Single-resource routes ──────────────────────────────────
 router.route("/:id").get(getJob).patch(updateJob).delete(deleteJob);
+
+// Admin-only: update status for any job
+router.patch("/:id/status", admin, (req, res, next) => {
+  // admin middleware assumes protect already ran and attached req.user
+  return adminUpdateStatus(req, res, next);
+});
 
 export default router;

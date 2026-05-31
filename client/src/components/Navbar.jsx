@@ -12,11 +12,21 @@ import {
   HiOutlineUser,
 } from 'react-icons/hi2';
 
-const navLinks = [
-  { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2 },
-  { to: '/all-jobs', label: 'All Jobs', icon: HiOutlineDocumentText },
-  { to: '/add-job', label: 'Add Job', icon: HiOutlinePlusCircle },
-];
+const getNavLinks = (role) => {
+  if (role === 'hr') {
+    return [
+      { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2 },
+      { to: '/post-job', label: 'Post Job', icon: HiOutlinePlusCircle },
+    ];
+  }
+  return [
+    { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2 },
+    { to: '/all-jobs', label: 'My Applications', icon: HiOutlineDocumentText },
+    { to: '/add-job', label: 'Add Application', icon: HiOutlinePlusCircle },
+    { to: '/browse-jobs', label: 'Browse Jobs', icon: HiOutlineBriefcase },
+    { to: '/profile', label: 'Profile', icon: HiOutlineUser },
+  ];
+};
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -56,7 +66,7 @@ const Navbar = () => {
           {/* Desktop Nav Links */}
           {isAuthenticated && (
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
+              {getNavLinks(user?.role).map((link) => (
                 <NavLink key={link.to} to={link.to} className={activeLinkClass}>
                   <link.icon className="w-4 h-4" />
                   {link.label}
@@ -134,7 +144,7 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                {navLinks.map((link) => (
+                {getNavLinks(user?.role).map((link) => (
                   <NavLink
                     key={link.to}
                     to={link.to}

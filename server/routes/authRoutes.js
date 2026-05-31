@@ -16,7 +16,10 @@
 
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
-import { register, login, getMe } from "../controllers/authController.js";
+import { register, login, getMe, uploadResume } from "../controllers/authController.js";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 import protect from "../middleware/authMiddleware.js";
 
 const router = Router();
@@ -64,6 +67,7 @@ router.post(
       .withMessage("Password is required")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
+    body("role").optional().isIn(["user", "hr", "admin"]).withMessage("Invalid role"),
   ],
   validate,
   register
@@ -92,5 +96,32 @@ router.post(
 // GET /api/auth/me  (protected – requires JWT)
 // ──────────────────────────────────────────────
 router.get("/me", protect, getMe);
+
+// ──────────────────────────────────────────────
+// POST /api/auth/upload-resume  (protected)
+// Accepts a single file field named `resume` (PDF or DOC/DOCX)
+// ──────────────────────────────────────────────
+const uploadsDir = path.join(process.cwd(), "uploads", "resumes");
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, `${req.user ? req.user.userId : Date.now()}-${Date.now()}${ext}`);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowed = [".pdf", ".doc", ".docx"];
+  if (allowed.includes(path.extname(file.originalname).toLowerCase())) cb(null, true);
+  else cb(new Error("Only PDF/DOC/DOCX files are allowed"), false);
+};
+
+const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
+
+router.post("/upload-resume", protect, upload.single("resume"), uploadResume);
 
 export default router;

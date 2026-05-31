@@ -38,6 +38,7 @@ const protect = (req, res, next) => {
       userId: decoded.userId,
       name: decoded.name,
       email: decoded.email,
+      role: decoded.role,
     };
 
     next(); // Token is valid – proceed to the next middleware / route handler

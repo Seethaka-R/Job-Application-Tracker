@@ -56,9 +56,13 @@ app.get("/", (_req, res) => {
   });
 });
 
+import jobOfferRoutes from "./routes/jobOfferRoutes.js";
+
 // ── 7. Mount Routes ─────────────────────────────────────────
 app.use("/api/auth", authRoutes); // Authentication endpoints
 app.use("/api/jobs", jobRoutes); // Job CRUD & stats endpoints
+app.use("/api/job-offers", jobOfferRoutes); // HR Job Offers
+app.use("/uploads", express.static("uploads")); // Serve uploaded resumes
 
 // ── 8. 404 handler for unknown routes ───────────────────────
 app.use((_req, res) => {

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'user' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +46,16 @@ const Register = () => {
             onChange={e => setFormData({...formData, password: e.target.value})}
             required
           />
+        </div>
+        <div>
+          <select
+            className="w-full p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 text-white"
+            value={formData.role}
+            onChange={e => setFormData({...formData, role: e.target.value})}
+          >
+            <option value="user">Applicant</option>
+            <option value="hr">HR / Company</option>
+          </select>
         </div>
         <button type="submit" className="w-full py-3 rounded-xl gradient-btn text-white font-bold">Register</button>
       </form>

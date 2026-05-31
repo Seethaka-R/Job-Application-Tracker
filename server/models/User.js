@@ -47,6 +47,19 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "Password must be at least 6 characters"],
       select: false, // Excluded from queries by default
     },
+    // Role: 'user', 'hr', or 'admin' — default is regular user
+    role: {
+      type: String,
+      enum: ["user", "hr", "admin"],
+      default: "user",
+    },
+
+    // Resume file path stored on the server filesystem (optional)
+    resume: {
+      type: String,
+      trim: true,
+      default: null,
+    },
   },
   {
     // Automatically add createdAt and updatedAt timestamps
