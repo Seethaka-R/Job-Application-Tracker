@@ -333,14 +333,14 @@ From the project root, you can use two terminal windows:
 
 | Page | Preview |
 |------|---------|
-| Landing Page | *Add screenshot* |
-| Register | *Add screenshot* |
-| Login | *Add screenshot* |
-| Dashboard | *Add screenshot* |
-| Add Job | *Add screenshot* |
-| All Jobs | *Add screenshot* |
-| Filter/Search | *Add screenshot* |
-| Mobile View | *Add screenshot* |
+| Landing Page | ![](docs/Screenshots/d1.png) |
+| Register |  ![](docs/Screenshots/d2.png)  |
+| Login |  ![](docs/Screenshots/d3.png)  |
+| Dashboard |  ![](docs/Screenshots/d5.png)  |
+| Add Job |  ![](docs/Screenshots/d4.png)  |
+| All Jobs |  ![](docs/Screenshots/d6.png)  |
+| Filter/Search |  ![](docs/Screenshots/d7.png)  |
+| Mobile View |  ![](docs/Screenshots/d8.png)  |
 
 ---
 
